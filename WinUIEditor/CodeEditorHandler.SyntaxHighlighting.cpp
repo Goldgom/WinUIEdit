@@ -129,13 +129,52 @@ namespace WinUIEditor
 		{
 			_call->SetILexer(_createLexer("null"));
 			SetLanguageIndentMode(0, { }, 0, { }, 0, { }, 0, { });
+		}else if(_highlightingLanguage == L"cangjie")
+		{
+			const auto lexer{ _createLexer("cpp") };
+			lexer->PropertySet("fold", "1");
+			_call->SetILexer(lexer);
+			_call->SetKeyWords(0,
+				"Int Int8 Int16 Int32 Int64 IntNative UInt8 UInt16 UInt32 UInt64 UIntNative Float16 Float32 Float64 Unit Bool Rune "
+				"Nothing false  "
+				"func "
+				"enum class struct interface "
+				"as in is init "
+				"quote spawn super "
+				"synchronized type "
+				"VArray");
+			// Optionally, clear other keyword groups if not needed
+			_call->SetKeyWords(1, 
+				"try catch throw "
+				"if match case while do else for where "
+				"main import return this This break continue package"
+				"var let mut const static macro abstract open override prop unsafe "
+				"operator public private protected finally foreign extend redef "
+				);
+			_call->SetKeyWords(2,
+				"a addindex addtogroup anchor arg attention "
+				"author b brief bug c class code date def defgroup deprecated dontinclude "
+				"e em endcode endhtmlonly endif endlatexonly endlink endverbatim enum example exception "
+				"f$ f[ f] file fn hideinitializer htmlinclude htmlonly "
+				"if image include ingroup internal invariant interface latexonly li line link "
+				"mainpage name namespace nosubgrouping note overload "
+				"p page par param param[in] param[out] "
+				"post pre ref relates remarks return retval "
+				"sa section see showinitializer since skip skipline struct subsection "
+				"test throw throws todo typedef union until "
+				"var verbatim verbinclude version warning weakgroup $ @ \\ & < > # { }");
+			SetLanguageIndentMode(
+				SCE_C_WORD2, {"do", "case", "else", "for", "if", "while", },
+				SCE_C_OPERATOR, { ";", },
+				SCE_C_OPERATOR, { "{", },
+				SCE_C_OPERATOR, { "}", });
 		}
 		else
 		{
 			_call->SetILexer(nullptr);
 			SetLanguageIndentMode(0, { }, 0, { }, 0, { }, 0, { });
 		}
-		if (_highlightingLanguage == L"cpp" || _highlightingLanguage == L"csharp" || _highlightingLanguage == L"javascript")
+		if (_highlightingLanguage == L"cpp" || _highlightingLanguage == L"csharp" || _highlightingLanguage == L"javascript" || _highlightingLanguage == L"cangjie")
 		{
 			_call->SetKeyWords(5, "todo toDo Todo ToDo TODO fixme fixMe Fixme FixMe FIXME");
 		}
@@ -161,7 +200,7 @@ namespace WinUIEditor
 
 	void CodeEditorHandler::UpdateLanguageStyles()
 	{
-		if (_highlightingLanguage == L"cpp" || _highlightingLanguage == L"csharp" || _highlightingLanguage == L"javascript")
+		if (_highlightingLanguage == L"cpp" || _highlightingLanguage == L"csharp" || _highlightingLanguage == L"javascript" || _highlightingLanguage == L"cangjie")
 		{
 			switch (_theme)
 			{
