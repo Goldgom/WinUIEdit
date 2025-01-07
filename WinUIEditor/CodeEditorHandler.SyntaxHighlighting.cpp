@@ -147,7 +147,7 @@ namespace WinUIEditor
 			_call->SetKeyWords(1, 
 				"try catch throw "
 				"if match case while do else for where "
-				"main import return this This break continue package"
+				"main import return this This break continue package "
 				"var let mut const static macro abstract open override prop unsafe "
 				"operator public private protected finally foreign extend redef "
 				);
